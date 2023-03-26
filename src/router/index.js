@@ -24,6 +24,7 @@ VueRouter.prototype.replace=function (location,resolve,reject){
 }
 
 export default new VueRouter({
+    mode:"history",
     routes:[
         {
             name:'home',

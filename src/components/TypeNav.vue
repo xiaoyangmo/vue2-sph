@@ -1,8 +1,8 @@
 <template>
   <div class="type-nav">
     <div class="container">
-      <div @mouseleave="clearCurBg" @mouseenter="sortShow">
-        <h2 class="all">全部商品分类</h2>
+      <div @mouseleave="clearCurBg">
+        <h2 class="all" @mouseenter="sortShow">全部商品分类</h2>
           <div class="sort">
             <transition name="sort">
             <div class="all-sort-list2" v-show="show" @click="goSearch">
@@ -143,7 +143,6 @@ export default {
       left: 0;
       top: 45px;
       width: 210px;
-      height: 461px;
       z-index: 999;
 
       .all-sort-list2 {

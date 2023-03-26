@@ -5,6 +5,11 @@ export const reqCategoryList=()=>requests({
     method: "GET",
     url:'/product/getBaseCategoryList'
 })
+export const reqSearch=(params)=>requests({
+    method: "POST",
+    url:'/list',
+    data:params
+})
 
 export const mockBanner = ()=>mock.get('/banners')
 
