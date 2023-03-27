@@ -24,23 +24,11 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{active:isOrder==='1'}">
+                  <a @click="changeSort(1)">综合<span v-show="isOrder==='1'">{{isDesc}}</span></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{active:isOrder==='2'}">
+                  <a @click="changeSort(2)">价格<span v-show="isOrder==='2'">{{isDesc}}</span></a>
                 </li>
               </ul>
             </div>
@@ -50,7 +38,7 @@
               <li class="yui3-u-1-5" v-for="good in goodsList" :key="good.id">
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="item.html"  target="_blank"><img :src="good.defaultImg" /></a>
+                    <router-link :to="`/detail/${good.id}`"><img :src="good.defaultImg" /></router-link>
                   </div>
                   <div class="price">
                     <strong>
@@ -72,35 +60,7 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <Pagination :pageNo="paramsList.pageNo" :pageSize="paramsList.pageSize" :totalPages="SearchList.totalPages" :continues="5" @getPage="getPage"></Pagination>
         </div>
         <!--hotsale-->
         <div class="clearfix hot-sale">
@@ -193,7 +153,7 @@
 
 <script>
 import Selector from "./Selector"
-import {mapGetters} from "vuex";
+import {mapGetters, mapState} from "vuex";
 
 export default {
   name: "Search",
@@ -205,7 +165,7 @@ export default {
         "category3Id": "",
         "categoryName": "",
         "keyword": "",
-        "order": "",
+        "order": "1:desc",
         "pageNo": 1,
         "pageSize": 10,
         "props": [],
@@ -215,9 +175,27 @@ export default {
   },
   components: {Selector},
   computed:{
-    ...mapGetters('search',['goodsList'])
+    ...mapGetters('search',['goodsList']),
+    ...mapState('search',['SearchList']),
+    isOrder(){
+      return this.paramsList.order.split(":")[0]
+    },
+    isDesc(){
+      return this.paramsList.order.split(":")[1]==='desc'?"⬇":"⬆";
+    }
   },
   methods: {
+    changeSort(value){
+      let order=this.paramsList.order.split(":");
+      let id=order[0];
+      let sort=order[1];
+      if(id===value.toString()){
+        this.paramsList.order=`${id}:${sort==="desc"?"asc":"desc"}`;
+      }else {
+        this.paramsList.order=`${value}:desc`;
+      }
+      this.getData()
+    },
     getData() {
       this.$store.dispatch('search/getSearchList',this.paramsList);
     },
@@ -250,6 +228,10 @@ export default {
     removeProp(index){
       this.paramsList.props.splice(index,1);
       this.getData()
+    },
+    getPage(value){
+      this.paramsList.pageNo=value;
+      this.getData();
     }
   },
   watch: {
@@ -474,82 +456,7 @@ span{
 }
 }
 }
-.page{
-  width: 733px;
-  height: 66px;
-  overflow: hidden;
-  float:right;
-.sui-pagination{
-  margin: 18px 0;
-ul{
-  margin-left: 0;
-  margin-bottom: 0;
-  vertical-align: middle;
-  width: 490px;
-  float: left;
-li{
-  line-height: 18px;
-  display: inline-block;
-a{
-  position: relative;
-  float: left;
-  line-height: 18px;
-  text-decoration: none;
-  background-color: #fff;
-  border: 1px solid #e0e9ee;
-  margin-left: -1px;
-  font-size: 14px;
-  padding: 9px 18px;
-  color: #333;
-}
-&.active{
-a{
-  background-color: #fff;
-  color: #e1251b;
-  border-color: #fff;
-  cursor: default;
-}
-}
-&.prev{
-a{
-  background-color: #fafafa;
-}
-}
-&.disabled{
-a{
-  color: #999;
-  cursor: default;
-}
-}
-&.dotted{
-span{
-  margin-left: -1px;
-  position: relative;
-  float: left;
-  line-height: 18px;
-  text-decoration: none;
-  background-color: #fff;
-  font-size: 14px;
-  border: 0;
-  padding: 9px 18px;
-  color: #333;
-}
-}
-&.next{
-a{
-  background-color: #fafafa;
-}
-}
-}
-}
-div{
-  color: #333;
-  font-size: 14px;
-  float: right;
-  width: 241px;
-}
-}
-}
+
 }
 .hot-sale{
   margin-bottom: 5px;

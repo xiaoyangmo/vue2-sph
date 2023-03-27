@@ -7,6 +7,7 @@ import Home from '@/pages/Home'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import Search from '@/pages/Search'
+import Detail from '@/pages/Detail'
 
 const originalPush=VueRouter.prototype.push;
 const originalReplace=VueRouter.prototype.replace;
@@ -51,8 +52,17 @@ export default new VueRouter({
             meta:{show:true}
         },
         {
-            path: '/',
+            name:'detail',
+            path: '/detail/:skuId',
+            component:Detail,
+            meta:{show:true}
+        },
+        {
+            path: '*',
             redirect:'/home'
         },
-    ]
+    ],
+    scrollBehavior () {
+        return { y: 0 }
+    }
 })

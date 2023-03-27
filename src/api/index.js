@@ -10,6 +10,10 @@ export const reqSearch=(params)=>requests({
     url:'/list',
     data:params
 })
+export const reqDetail=(skuid)=>requests({
+    method: "get",
+    url:`/item/${skuid}`
+})
 
 export const mockBanner = ()=>mock.get('/banners')
 
