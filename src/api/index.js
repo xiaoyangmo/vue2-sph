@@ -14,6 +14,14 @@ export const reqDetail=(skuid)=>requests({
     method: "get",
     url:`/item/${skuid}`
 })
+export const addShopCar=(skuId,skuNum)=>requests({
+    method: "POST",
+    url:`/cart/addToCart/${ skuId }/${ skuNum }`
+})
+export const getCartList=()=>requests({
+    method: "get",
+    url:'cart/cartList'
+})
 
 export const mockBanner = ()=>mock.get('/banners')
 

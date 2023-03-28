@@ -23,7 +23,6 @@ export default {
     list:{
       immediate:true,
       handler(){
-        console.log(this.list)
         this.$nextTick(()=>{
           new Swiper ('.swiper-container', {
             loop: true, // 循环模式选项

@@ -33,13 +33,15 @@ export default {
   props:['pageNo','pageSize','totalPages','continues'],
   computed: {
     startAndEnd() {
-      let {pageNo,totalPages,continues}=this.$props;
-      let start=pageNo-Math.floor(continues/2);
-      let end=pageNo+Math.floor(continues/2);
+      let {pageNo,totalPages,continues}=this;
+      let start=0;
+      let end=0;
       if (continues>totalPages){
         start=1;
         end=totalPages;
       }else {
+         start=pageNo-Math.floor(continues/2);
+         end=pageNo+Math.floor(continues/2);
         if (start<1){
           start=1;
           end=continues;

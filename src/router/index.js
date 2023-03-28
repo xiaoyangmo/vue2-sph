@@ -8,6 +8,8 @@ import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import Search from '@/pages/Search'
 import Detail from '@/pages/Detail'
+import AddCartSuccess from '@/pages/AddCartSuccess'
+import ShopCart from '@/pages/ShopCart'
 
 const originalPush=VueRouter.prototype.push;
 const originalReplace=VueRouter.prototype.replace;
@@ -55,6 +57,18 @@ export default new VueRouter({
             name:'detail',
             path: '/detail/:skuId',
             component:Detail,
+            meta:{show:true}
+        },
+        {
+            name:'AddCartSuccess',
+            path: '/AddCartSuccess',
+            component:AddCartSuccess,
+            meta:{show:true}
+        },
+        {
+            name:'ShopCart',
+            path: '/ShopCart',
+            component:ShopCart,
             meta:{show:true}
         },
         {

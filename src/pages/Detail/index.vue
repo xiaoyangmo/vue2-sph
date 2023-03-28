@@ -16,9 +16,9 @@
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom />
+          <Zoom :skuImageList="skuInfo.skuImageList"/>
           <!-- 小图列表 -->
-          <ImageList />
+          <ImageList :skuImageList="skuInfo.skuImageList"/>
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
@@ -63,39 +63,19 @@
           <div class="choose">
             <div class="chooseArea">
               <div class="choosed"></div>
-              <dl>
-                <dt class="title">选择颜色</dt>
-                <dd changepirce="0" class="active">金色</dd>
-                <dd changepirce="40">银色</dd>
-                <dd changepirce="90">黑色</dd>
-              </dl>
-              <dl>
-                <dt class="title">内存容量</dt>
-                <dd changepirce="0" class="active">16G</dd>
-                <dd changepirce="300">64G</dd>
-                <dd changepirce="900">128G</dd>
-                <dd changepirce="1300">256G</dd>
-              </dl>
-              <dl>
-                <dt class="title">选择版本</dt>
-                <dd changepirce="0" class="active">公开版</dd>
-                <dd changepirce="-1000">移动版</dd>
-              </dl>
-              <dl>
-                <dt class="title">购买方式</dt>
-                <dd changepirce="0" class="active">官方标配</dd>
-                <dd changepirce="-240">优惠移动版</dd>
-                <dd changepirce="-390">电信优惠版</dd>
+              <dl v-for="attr in spuSaleAttrList" :key="attr.id">
+                <dt class="title">{{ attr.saleAttrName }}</dt>
+                <dd :class="{active:value.isChecked===1}" v-for="value in attr.spuSaleAttrValueList" :key="value.id" @click="selector(value,attr.spuSaleAttrValueList)">{{ value.saleAttrValueName }}</dd>
               </dl>
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt">
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" class="itxt" v-model="num" @change="changeNum">
+                <a class="plus" @click="num++">+</a>
+                <a class="mins" @click="min">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a @click="addShopCar">加入购物车</a>
               </div>
             </div>
           </div>
@@ -352,6 +332,11 @@
 
   export default {
     name: 'Detail',
+    data() {
+      return {
+        num: 1
+      }
+    },
     components: {
       ImageList,
       Zoom
@@ -359,6 +344,33 @@
     computed: {
       ...mapGetters('detail',['categoryView','skuInfo','spuSaleAttrList']),
       ...mapState('detail',['Detail'])
+    },
+    methods: {
+      selector(value,attr) {
+        attr.forEach(item =>item.isChecked=0);
+        value.isChecked=1;
+      },
+      min(){
+        this.num<=1?this.num=1:this.num--
+      },
+      changeNum(e){
+        let value=e.target.value*1;
+        if(isNaN(value)||value<1){
+          value=1
+        }
+        this.num=Math.floor(value)
+      },
+      async addShopCar(){
+        try {
+          await this.$store.dispatch("detail/addShopCar",{
+            skuId:this.$route.params.skuId,skuNum:this.num
+          });
+          this.$router.push({name:'AddCartSuccess',query:{skuNum:`${this.num}`}});
+          sessionStorage.setItem('skuInfo',JSON.stringify(this.skuInfo));
+        }catch (e) {
+          alert("加入失败，请重新再试")
+        }
+      }
     },
     mounted() {
       if(this.$route.params.skuId){
@@ -523,6 +535,7 @@
                   border-right: 1px solid #bbb;
                   border-bottom: 1px solid #bbb;
                   border-left: 1px solid #eee;
+                  cursor: pointer;
 
                   &.active {
                     color: green;

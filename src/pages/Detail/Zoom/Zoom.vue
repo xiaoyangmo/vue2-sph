@@ -1,17 +1,50 @@
 <template>
   <div class="spec-preview">
-    <img src="../images/s1.png" />
-    <div class="event"></div>
+    <img :src="image" />
+    <div class="event" @mousemove="handle" ref="box"></div>
     <div class="big">
-      <img src="../images/s1.png" />
+      <img :src="image" ref="bigImg"/>
     </div>
-    <div class="mask"></div>
+    <div class="mask" ref="mask"></div>
   </div>
 </template>
 
 <script>
+  import {mapState} from "vuex";
+  import {throttle} from "lodash";
+
   export default {
     name: "Zoom",
+    props: ['skuImageList'],
+    computed: {
+      ...mapState('detail',["imgIndex"]),
+      image() {
+        if(this.skuImageList){
+          return this.skuImageList[this.imgIndex].imgUrl
+        }else {
+          return ''
+        }
+      }
+    },
+    methods: {
+      handle:throttle(function (event){
+        let mask=this.$refs.mask;
+        let bigImg=this.$refs.bigImg;
+        let box=this.$refs.box;
+        let left=event.offsetX-(mask.offsetWidth)/2;
+        let top=event.offsetY-(mask.offsetHeight)/2;
+        let width=box.offsetWidth-mask.offsetWidth;
+        let height=box.offsetHeight-mask.offsetHeight;
+        if(left<0) left=0;
+        if(left>width) left=width;
+        if (top<0) top=0;
+        if (top>height) top=height;
+        mask.style.left=left+'px';
+        mask.style.top=top+'px';
+        bigImg.style.left=-left*2+'px';
+        bigImg.style.top=-top*2+'px';
+        },50)
+    },
   }
 </script>
 

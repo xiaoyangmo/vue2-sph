@@ -1,37 +1,43 @@
 <template>
   <div class="swiper-container">
     <div class="swiper-wrapper">
-      <div class="swiper-slide">
-        <img src="../images/s1.png">
+      <div class="swiper-slide" v-for="(ImageList,index) in skuImageList" :key="ImageList.id" >
+        <img :src="ImageList.imgUrl" :class='{active:hover===index}' @mouseenter="getIndex(index)">
       </div>
     </div>
-    <div class="swiper-button-next"></div>
-    <div class="swiper-button-prev"></div>
   </div>
 </template>
 
 <script>
-
-  import Swiper from 'swiper'
   export default {
     name: "ImageList",
+    data() {
+      return {
+        hover: 0
+      }
+    },
+    props: ['skuImageList'],
+    methods: {
+      getIndex(index) {
+        this.hover=index;
+        this.$store.commit("detail/getIndex",index)
+      }
+    },
   }
 </script>
 
 <style lang="less" scoped>
   .swiper-container {
-    height: 56px;
+    height: 66px;
     width: 412px;
     box-sizing: border-box;
-    padding: 0 12px;
+    padding: 10px 0 0;
 
     .swiper-slide {
       width: 56px;
       height: 56px;
 
       img {
-        width: 100%;
-        height: 100%;
         border: 1px solid #ccc;
         padding: 2px;
         width: 50px;
@@ -39,11 +45,6 @@
         display: block;
 
         &.active {
-          border: 2px solid #f60;
-          padding: 1px;
-        }
-
-        &:hover {
           border: 2px solid #f60;
           padding: 1px;
         }
