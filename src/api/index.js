@@ -20,7 +20,15 @@ export const addShopCar=(skuId,skuNum)=>requests({
 })
 export const getCartList=()=>requests({
     method: "get",
-    url:'cart/cartList'
+    url:'/cart/cartList'
+})
+export const cartChecked=(skuID,isChecked)=>requests({
+    method: "get",
+    url:`/cart/checkCart/${skuID}/${isChecked}`
+})
+export const deleteCart=(skuId)=>requests({
+    method: "DELETE",
+    url:`/cart/deleteCart/${skuId}`
 })
 
 export const mockBanner = ()=>mock.get('/banners')

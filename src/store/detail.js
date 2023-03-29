@@ -1,10 +1,12 @@
 import {reqDetail,addShopCar} from '@/api'
+import {getUuid} from '@/utils/uuid'
 
 export default {
     namespaced: true,
     state:{
         Detail:{},
-        imgIndex:0
+        imgIndex:0,
+        uuid_token:getUuid()
     },
     actions:{
         async getDetail({commit},skuId){

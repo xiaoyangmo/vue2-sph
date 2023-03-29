@@ -8,6 +8,9 @@ const requests=axios.create({
 });
 requests.interceptors.request.use((config) => {
     nprogress.start();
+    if(localStorage.getItem('uuid_token')){
+        config.headers.userTempId=localStorage.getItem('uuid_token')
+    }
     return config
 })
 requests.interceptors.response.use((res)=>{

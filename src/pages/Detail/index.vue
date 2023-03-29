@@ -30,7 +30,7 @@
                 <div class="title">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</div>
                 <div class="price">
                   <i>¥</i>
-                  <em>{{ Detail.price }}</em>
+                  <em>{{ skuInfo.price }}</em>
                   <span>降价通知</span>
                 </div>
                 <div class="remark">
@@ -328,7 +328,7 @@
 <script>
   import ImageList from './ImageList/ImageList'
   import Zoom from './Zoom/Zoom'
-  import {mapGetters, mapState} from "vuex";
+  import {mapGetters} from "vuex";
 
   export default {
     name: 'Detail',
@@ -343,7 +343,6 @@
     },
     computed: {
       ...mapGetters('detail',['categoryView','skuInfo','spuSaleAttrList']),
-      ...mapState('detail',['Detail'])
     },
     methods: {
       selector(value,attr) {
