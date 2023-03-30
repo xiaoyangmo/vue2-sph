@@ -172,7 +172,7 @@ h4 {
   width: 25%;
 
 .list-item {
-  background-image: url(./images/icons.png);
+  background-image: url(~@/assets/icons.png);
   width: 61px;
   height: 40px;
   display: block;

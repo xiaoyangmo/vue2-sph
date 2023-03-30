@@ -11,6 +11,9 @@ requests.interceptors.request.use((config) => {
     if(localStorage.getItem('uuid_token')){
         config.headers.userTempId=localStorage.getItem('uuid_token')
     }
+    if(localStorage.getItem('token')){
+        config.headers.TOKEN=localStorage.getItem('token')
+    }
     return config
 })
 requests.interceptors.response.use((res)=>{

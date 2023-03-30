@@ -120,7 +120,7 @@
             if(isNaN(disNum*1)){
               disNum=0
             }else{
-              disNum=disNum-cart.skuNum
+              disNum=Math.floor(disNum)-cart.skuNum
             }
             break;
         }

@@ -10,6 +10,8 @@ import Search from '@/pages/Search'
 import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
+import {getToken} from '@/utils/token'
+import store from '@/store'
 
 const originalPush=VueRouter.prototype.push;
 const originalReplace=VueRouter.prototype.replace;
@@ -26,7 +28,7 @@ VueRouter.prototype.replace=function (location,resolve,reject){
         return originalReplace.call(this,location).catch(err=>err)
 }
 
-export default new VueRouter({
+let router=new VueRouter({
     mode:"history",
     routes:[
         {
@@ -80,3 +82,24 @@ export default new VueRouter({
         return { y: 0 }
     }
 })
+
+router.beforeEach((to,from,next) => {
+    let token=getToken();
+    if(token){
+        if(to.path==='/login'||to.path==='/register'){
+            next('/')
+        }else {
+            let name=store.state.user.userInfo.name;
+            if(name){
+                next()
+            }else {
+                let result= store.dispatch('user/getUserInfo');
+                result.then(()=>next()).catch(async () => {await store.dispatch('user/loginOut');next('/login')})
+            }
+        }
+    }else {
+        next()
+    }
+})
+
+export default router

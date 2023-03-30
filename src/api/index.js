@@ -30,6 +30,28 @@ export const deleteCart=(skuId)=>requests({
     method: "DELETE",
     url:`/cart/deleteCart/${skuId}`
 })
+export const sendCode=(phone)=>requests({
+    method: "get",
+    url:`/user/passport/sendCode/${phone}`
+})
+export const register=(data)=>requests({
+    method: "post",
+    url:'/user/passport/register',
+    data
+})
+export const login=(data)=>requests({
+    method: "post",
+    url:'/user/passport/login',
+    data
+})
+export const getUserInfo=()=>requests({
+    method: "get",
+    url:'/user/passport/auth/getUserInfo'
+})
+export const loginOut=()=>requests({
+    method: "get",
+    url:'/user/passport/logout'
+})
 
 export const mockBanner = ()=>mock.get('/banners')
 
