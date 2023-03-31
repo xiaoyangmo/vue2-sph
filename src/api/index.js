@@ -52,6 +52,23 @@ export const loginOut=()=>requests({
     method: "get",
     url:'/user/passport/logout'
 })
+export const getTrade=()=>requests({
+    method: "get",
+    url:'/order/auth/trade'
+})
+export const submitOrder=(tradeNo,data)=>requests({
+    method: "post",
+    url:`/order/auth/submitOrder?tradeNo=${tradeNo}`,
+    data
+})
+export const getOrder=(orderId)=>requests({
+    method: "get",
+    url:`/payment/weixin/createNative/${orderId}`
+})
+export const getPay=(orderId)=>requests({
+    method: "get",
+    url:`/payment/weixin/queryPayStatus/${orderId}`
+})
 
 export const mockBanner = ()=>mock.get('/banners')
 

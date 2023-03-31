@@ -26,4 +26,7 @@ export default {
   margin: 0;
   padding: 0;
 }
+body{
+  padding-right: 0 !important;
+}
 </style>

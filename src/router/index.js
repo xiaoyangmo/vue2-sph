@@ -12,6 +12,10 @@ import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
 import {getToken} from '@/utils/token'
 import store from '@/store'
+import Trade from '@/pages/Trade'
+import Center from '@/pages/Center'
+import Pay from '@/pages/Pay'
+import PaySuccess from '@/pages/PaySuccess'
 
 const originalPush=VueRouter.prototype.push;
 const originalReplace=VueRouter.prototype.replace;
@@ -71,6 +75,30 @@ let router=new VueRouter({
             name:'ShopCart',
             path: '/ShopCart',
             component:ShopCart,
+            meta:{show:true}
+        },
+        {
+            name:'trade',
+            path: '/trade',
+            component:Trade,
+            meta:{show:true}
+        },
+        {
+            name:'center',
+            path: '/center',
+            component:Center,
+            meta:{show:true}
+        },
+        {
+            name:'pay',
+            path: '/pay',
+            component:Pay,
+            meta:{show:true}
+        },
+        {
+            name:'paySuccess',
+            path: '/paySuccess',
+            component:PaySuccess,
             meta:{show:true}
         },
         {
