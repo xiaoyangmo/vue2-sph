@@ -69,6 +69,11 @@ export const getPay=(orderId)=>requests({
     method: "get",
     url:`/payment/weixin/queryPayStatus/${orderId}`
 })
+export const myOrder=(page,limit)=>requests({
+    method: "get",
+    url:`/order/auth/${page}/${limit}`
+})
+
 
 export const mockBanner = ()=>mock.get('/banners')
 

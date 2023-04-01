@@ -77,7 +77,10 @@
     methods: {
       login() {
         let result=this.$store.dispatch('user/userLogin',{phone:this.phone, password:this.password});
-          result.then(() => this.$router.push('/home')).catch(() => alert('账号密码错误'))
+          result.then(() => {
+            let path=this.$route.query.redirect||'/home';
+            this.$router.push(path);
+          }).catch(() => alert('账号密码错误'))
       }
     },
   }

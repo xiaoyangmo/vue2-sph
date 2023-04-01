@@ -140,7 +140,7 @@ import QRCode from 'qrcode'
     },
     mounted() {
       this.getData()
-    }
+    },
   }
 </script>
 

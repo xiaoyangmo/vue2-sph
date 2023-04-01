@@ -16,6 +16,7 @@ import Trade from '@/pages/Trade'
 import Center from '@/pages/Center'
 import Pay from '@/pages/Pay'
 import PaySuccess from '@/pages/PaySuccess'
+import myOrder from '@/pages/Center/myOrder'
 
 const originalPush=VueRouter.prototype.push;
 const originalReplace=VueRouter.prototype.replace;
@@ -81,25 +82,56 @@ let router=new VueRouter({
             name:'trade',
             path: '/trade',
             component:Trade,
-            meta:{show:true}
+            meta:{show:true},
+            beforeEnter:(to,from,next)=>{
+                if(from.path.indexOf('/ShopCart')!==-1){
+                    next()
+                }else {
+                    next('/ShopCart')
+                }
+            }
         },
         {
             name:'center',
             path: '/center',
             component:Center,
-            meta:{show:true}
+            meta:{show:true},
+            children:[
+                {
+                    path:'myOrder',
+                    component:myOrder
+                },
+                {
+                    path:'/center',
+                    redirect:'/center/myOrder'
+                }
+            ]
         },
         {
             name:'pay',
             path: '/pay',
             component:Pay,
-            meta:{show:true}
+            meta:{show:true},
+            beforeEnter:(to,from,next)=>{
+                if(from.path.indexOf('/trade')!==-1){
+                    next()
+                }else {
+                    next('/ShopCart')
+                }
+            }
         },
         {
             name:'paySuccess',
             path: '/paySuccess',
             component:PaySuccess,
-            meta:{show:true}
+            meta:{show:true},
+            beforeEnter:(to,from,next)=>{
+                if(from.path.indexOf('/pay')!==-1){
+                    next()
+                }else {
+                    next('/ShopCart')
+                }
+            }
         },
         {
             path: '*',
@@ -122,11 +154,16 @@ router.beforeEach((to,from,next) => {
                 next()
             }else {
                 let result= store.dispatch('user/getUserInfo');
-                result.then(()=>next()).catch(async () => {await store.dispatch('user/loginOut');next('/login')})
+                result.then(()=>next()).catch(async () => {await store.dispatch('user/loginOut');})
             }
         }
     }else {
-        next()
+        let path=['/pay','paySuccess','/trade'];
+        if(path.indexOf(to.path)!==-1||to.path.indexOf('/center')!==-1){
+            next(`/login?redirect=${to.path}`);
+        }else{
+            next()
+        }
     }
 })
 
